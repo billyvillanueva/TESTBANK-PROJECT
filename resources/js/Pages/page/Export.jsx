@@ -7,6 +7,10 @@ import { Document, Packer, Paragraph, VerticalAlign } from "docx";
 import { saveAs } from "file-saver";
 import Docxtemplater from "docxtemplater";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { ComponentToPrint } from "./PrintPaper";
+import ReactToPrint from "react-to-print";
+import { Example } from "./PrintButton";
+import ReactDOM from "react-dom";
 
 export default function QuizPage({ auth }) {
     const [LimitItem, setLimitItem] = useState(0);
@@ -32,29 +36,27 @@ export default function QuizPage({ auth }) {
         setRecords(resdata);
     };
 
-    const generateWordDocument = () => {
-        const doc = new docx.Document();
+    // const generateWordDocument = () => {
+    //     const doc = new docx.Document();
 
-        // Add content to the document
-        doc.addSection({
-            children: [
-                new docx.Paragraph({
-                    children: [
-                        new docx.TextRun({
-                            text: JSON.stringify(
-                                records.map((a, b) => (
-                                    <h1 key={b}> {a.Question}</h1>
-                                ))
-                            ),
-                        }),
-                    ],
-                }),
-            ],
-        });
-        docx.Packer.toBlob(doc).then((blob) => {
-            saveAs(blob, "first.docx");
-        });
-    };
+    //     // Add content to the document
+    //     doc.addSection({
+    //         children: [
+    //             new docx.Paragraph({
+    //                 children: [
+    //                     new docx.TextRun({
+    //                         text: JSON.stringify(
+    //                             records.map((a, b) => <>{a.Question}</>)
+    //                         ),
+    //                     }),
+    //                 ],
+    //             }),
+    //         ],
+    //     });
+    //     docx.Packer.toBlob(doc).then((blob) => {
+    //         saveAs(blob, "first.docx");
+    //     });
+    // };
 
     return (
         <AuthenticatedLayout
@@ -97,6 +99,7 @@ export default function QuizPage({ auth }) {
                                     className="p-2 rounded-md cursor-pointer"
                                 />
                             </div>
+                            <div id="printpaper"></div>
                         </div>
                         <div className="flex justify-end items-center m-2 relative w-50">
                             <PrimaryButton
@@ -108,123 +111,21 @@ export default function QuizPage({ auth }) {
                         </div>
                     </div>
                     {records.length !== 1 && (
-                        <div>
-                            <div className="dark:bg-gray-800 overflow-hidden p-12 ">
-                                <div>
-                                    <div className="flex justify-center items-center mb-4 font-bold">
-                                        <h1 className="opacity-75">
-                                            -Page Preview-
-                                        </h1>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <h1 className="mb-2 ml-4 opacity-50">
-                                            Page 1
-                                        </h1>
-                                    </div>
+                        <div className="dark:bg-gray-800 overflow-hidden p-12 ">
+                            <div>
+                                <div className="flex justify-center items-center mb-4 font-bold">
+                                    <h1 className="opacity-75">
+                                        -Page Preview-
+                                    </h1>
                                 </div>
-                                <div className="bg-white shadow-sm p-12 text-gray-900 dark:text-gray-100">
-                                    <div className="flex justify-center items-center">
-                                        <ApplicationLogo className="w-25 h-25 fill-current text-gray-500 mb-6" />
-                                    </div>
-                                    <div className="flex justify-between p-10">
-                                        <div className="flex flex-column mb-6 gap-2">
-                                            <label htmlFor="">
-                                                Name:___________________________________
-                                            </label>
-                                            <label htmlFor="">
-                                                Year &
-                                                Course:___________________________________
-                                            </label>
-                                        </div>
-                                        <div className="flex flex-column mb-6 gap-2">
-                                            <label htmlFor="">
-                                                Date:___________________________________
-                                            </label>
-                                            <label htmlFor="">
-                                                Score:___________________________________
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    {records.map((a, index) => (
-                                        <div key={index}>
-                                            <div className="w-100 h-full">
-                                                <ol>
-                                                    <li>
-                                                        {index + 1}.&nbsp;
-                                                        {a.Question}
-                                                    </li>
-                                                </ol>
-                                                <ul
-                                                    className="py-2"
-                                                    style={{
-                                                        paddingLeft: "50px",
-                                                    }}
-                                                >
-                                                    <li
-                                                        style={{
-                                                            listStyleType:
-                                                                "lower-alpha",
-                                                            margin: "3px",
-                                                        }}
-                                                    >
-                                                        {a.Aa}
-                                                    </li>
-                                                    <li
-                                                        style={{
-                                                            listStyleType:
-                                                                "lower-alpha",
-                                                            margin: "3px",
-                                                        }}
-                                                    >
-                                                        {a.Ab}
-                                                    </li>
-                                                    <li
-                                                        style={{
-                                                            listStyleType:
-                                                                "lower-alpha",
-                                                            margin: "3px",
-                                                        }}
-                                                    >
-                                                        {a.Ac}
-                                                    </li>
-                                                    <li
-                                                        style={{
-                                                            listStyleType:
-                                                                "lower-alpha",
-                                                            margin: "3px",
-                                                        }}
-                                                    >
-                                                        {a.Ad}
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    ))}
+                                <div className="flex justify-between">
+                                    <h1 className="mb-2 ml-4 opacity-50">
+                                        Page 1
+                                    </h1>
                                 </div>
                             </div>
-                            <div className="flex justify-end">
-                                <PrimaryButton onClick={generateWordDocument}>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        fill="currentColor"
-                                        className="mr-2 bi bi-box-arrow-down"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1z"
-                                        />
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708z"
-                                        />
-                                    </svg>
-                                    Download now
-                                </PrimaryButton>
-                            </div>
+                            <Example />
+                            {/* <ComponentToPrint value={records} /> */}
                         </div>
                     )}
                 </div>

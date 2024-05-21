@@ -23,6 +23,7 @@
         "docx": "^8.5.0",
         "docxtemplater": "^3.47.3",
         "file-saver": "^2.0.5",
-        "officegen": "^0.6.5"
+        "officegen": "^0.6.5",
+        "react-to-print": "^2.15.1"
     }
 }
