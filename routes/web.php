@@ -7,17 +7,17 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-// Route::get('/dash', function(){
-//     return view('dashboard');
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
 // });
+Route::get('/', function(){
+    return Inertia::render('Auth/Login');
+});
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/jsonQuiz', [ExamController::class, 'jsonQuiz']);
-Route::get('/jsonQuizRandom/{limit}', [ExportController::class, 'index'])->name('jsonQuizRandom');
+Route::get('/jsonQuizRandom/{limit}/{lvl}', [ExportController::class, 'index'])->name('jsonQuizRandom');
 Route::get('/quizes', [ExamController::class, 'Quizes'])->name('quizes');
 Route::get('/delete/{id}', [ExamController::class, 'deleteQuiz'])->name('deleteQuiz');
 Route::post('/addQuiz', [ExamController::class, 'addQuiz'])->name('addQuiz');

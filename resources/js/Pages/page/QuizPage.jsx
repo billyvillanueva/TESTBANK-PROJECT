@@ -5,23 +5,38 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function QuizPage({ auth }) {
+    const [categoryData, setUserdata] = useState([]);
     const [records, setRecords] = useState([]);
     useEffect(() => {
         const getQuizdata = async () => {
             const reqdata = await fetch("http://127.0.0.1:8000/jsonQuiz");
             const resdata = await reqdata.json();
+            setUserdata(resdata);
             setRecords(resdata);
         };
         getQuizdata();
     }, []);
 
-    const EditQuiz = (Question, A, B, C, D, key, id) => {
+    const Filter = (e) => {
+        if (e.target.value === "All") {
+            setRecords(categoryData);
+        } else {
+            setRecords(
+                categoryData.filter((f) =>
+                    f.difficulty.includes(e.target.value)
+                )
+            );
+        }
+    };
+
+    const EditQuiz = (Question, A, B, C, D, key, difficulty, id) => {
         const question = Question;
         const answerA = A;
         const answerB = B;
         const answerC = C;
         const answerD = D;
         const Akey = key;
+        const Alvl = difficulty;
         const Quizid = id;
 
         setData((prev) => {
@@ -32,6 +47,7 @@ export default function QuizPage({ auth }) {
                 answerB: answerB,
                 answerC: answerC,
                 answerD: answerD,
+                Alvl: Alvl,
                 Akey: Akey,
                 id: Quizid,
             };
@@ -68,6 +84,7 @@ export default function QuizPage({ auth }) {
         answerC: "",
         answerD: "",
         Akey: "",
+        Alvl: "",
         id: "",
     });
     const submitQuiz = (e) => {
@@ -87,6 +104,7 @@ export default function QuizPage({ auth }) {
         });
     };
     // end here
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -101,8 +119,24 @@ export default function QuizPage({ auth }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex justify-end">
-                        <div className="w-75 flex justify-end">
-                            <div className="w-50 p-4">
+                        <div className="w-100 flex justify-between">
+                            <div className="w-75 flex items-center">
+                                <select
+                                    onClick={Filter}
+                                    name=""
+                                    id=""
+                                    style={{
+                                        border: "1px solid #dee2e6",
+                                        borderRadius: "8px",
+                                    }}
+                                >
+                                    <option value="All">All</option>
+                                    <option value="Easy">Easy</option>
+                                    <option value="Average">Average</option>
+                                    <option value="Hard">Hard</option>
+                                </select>
+                            </div>
+                            <div className="w-50 p-4 flex justify-between">
                                 <input
                                     type="text"
                                     placeholder="Search here..."
@@ -171,6 +205,7 @@ export default function QuizPage({ auth }) {
                                                             rec.Ac,
                                                             rec.Ad,
                                                             rec.Akey,
+                                                            rec.difficulty,
                                                             rec.id
                                                         )
                                                     }
@@ -418,6 +453,34 @@ export default function QuizPage({ auth }) {
                                                         required
                                                     />
                                                 </div>
+                                                <div className="mb-3">
+                                                    <label
+                                                        htmlFor="recipient-name"
+                                                        className="col-form-label"
+                                                    >
+                                                        Level of Difficulty:
+                                                    </label>
+                                                    <select
+                                                        name="Alvl"
+                                                        className="form-control"
+                                                        id="recipient-name"
+                                                        value={data.Alvl}
+                                                        onChange={
+                                                            handleInputChange
+                                                        }
+                                                        required
+                                                    >
+                                                        <option value="Easy">
+                                                            Easy
+                                                        </option>
+                                                        <option value="Average">
+                                                            Average
+                                                        </option>
+                                                        <option value="Hard">
+                                                            Hard
+                                                        </option>
+                                                    </select>
+                                                </div>
 
                                                 <PrimaryButton className="ms-4">
                                                     Save
@@ -582,6 +645,36 @@ export default function QuizPage({ auth }) {
                                                         }
                                                         required
                                                     />
+                                                </div>
+                                                <div className="mb-3">
+                                                    <label
+                                                        htmlFor="recipient-name"
+                                                        className="col-form-label"
+                                                    >
+                                                        Level of Difficulty:
+                                                    </label>
+                                                    <select
+                                                        name="Alvl"
+                                                        className="form-control"
+                                                        id="recipient-name"
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                "Alvl",
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        required
+                                                    >
+                                                        <option value="Easy">
+                                                            Easy
+                                                        </option>
+                                                        <option value="Average">
+                                                            Average
+                                                        </option>
+                                                        <option value="Hard">
+                                                            Hard
+                                                        </option>
+                                                    </select>
                                                 </div>
 
                                                 <PrimaryButton className="ms-4">

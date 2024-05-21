@@ -6,8 +6,6 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { Document, Packer, Paragraph, VerticalAlign } from "docx";
 import { saveAs } from "file-saver";
 import Docxtemplater from "docxtemplater";
-import { docx } from "officegen";
-import { fs } from "fs";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function QuizPage({ auth }) {
@@ -20,43 +18,43 @@ export default function QuizPage({ auth }) {
             setLimitItem(item);
         }
     };
+    const [LvlItem, setLvlItem] = useState();
+    const setLvl = (e) => {
+        setLvlItem(e.target.value);
+    };
+
     const [records, setRecords] = useState([{}]);
     const getQuizdata = async () => {
         const reqdata = await fetch(
-            `http://127.0.0.1:8000/jsonQuizRandom/${LimitItem}`
+            `http://127.0.0.1:8000/jsonQuizRandom/${LimitItem}/${LvlItem}`
         );
         const resdata = await reqdata.json();
         setRecords(resdata);
     };
 
-    const p = docx.createP();
-    p.addText("this is first paragraph");
-    const out = fs.createWriteStream("result.docx");
-    docx.generate(out);
+    const generateWordDocument = () => {
+        const doc = new docx.Document();
 
-    // const generateWordDocument = () => {
-    //     const doc = new docx.Document();
-
-    //     // Add content to the document
-    //     doc.addSection({
-    //         children: [
-    //             new docx.Paragraph({
-    //                 children: [
-    //                     new docx.TextRun({
-    //                         text: JSON.stringify(
-    //                             records.map((a, b) => (
-    //                                 <h1 key={b}> {a.Question}</h1>
-    //                             ))
-    //                         ),
-    //                     }),
-    //                 ],
-    //             }),
-    //         ],
-    //     });
-    //     docx.Packer.toBlob(doc).then((blob) => {
-    //         saveAs(blob, "first.docx");
-    //     });
-    // };
+        // Add content to the document
+        doc.addSection({
+            children: [
+                new docx.Paragraph({
+                    children: [
+                        new docx.TextRun({
+                            text: JSON.stringify(
+                                records.map((a, b) => (
+                                    <h1 key={b}> {a.Question}</h1>
+                                ))
+                            ),
+                        }),
+                    ],
+                }),
+            ],
+        });
+        docx.Packer.toBlob(doc).then((blob) => {
+            saveAs(blob, "first.docx");
+        });
+    };
 
     return (
         <AuthenticatedLayout
@@ -72,19 +70,20 @@ export default function QuizPage({ auth }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden rounded-md shadow-sm p-12 mb-4 flex">
-                        <div className="flex">
-                            <div className="flex flex-column m-2 h-full">
+                        <div className="flex w-50">
+                            <div className="flex flex-column m-2 h-full w-50">
                                 <label htmlFor="lvl">
                                     Level of Difficulty:
                                 </label>
                                 <select
+                                    onClick={(e) => setLvl(e)}
                                     name="lvl"
                                     id="lvl"
                                     className="p-2 rounded-md cursor-pointer"
                                 >
-                                    <option value="">Easy</option>
-                                    <option value="">Average</option>
-                                    <option value="">Hard</option>
+                                    <option value="Easy">Easy</option>
+                                    <option value="Average">Average</option>
+                                    <option value="Hard">Hard</option>
                                 </select>
                             </div>
                             <div className="flex flex-column h-full m-2">
@@ -99,8 +98,11 @@ export default function QuizPage({ auth }) {
                                 />
                             </div>
                         </div>
-                        <div className="flex justify-center m-2 relative">
-                            <PrimaryButton onClick={getQuizdata}>
+                        <div className="flex justify-end items-center m-2 relative w-50">
+                            <PrimaryButton
+                                onClick={getQuizdata}
+                                className="h-50"
+                            >
                                 Fetch/Filter
                             </PrimaryButton>
                         </div>
@@ -121,7 +123,29 @@ export default function QuizPage({ auth }) {
                                     </div>
                                 </div>
                                 <div className="bg-white shadow-sm p-12 text-gray-900 dark:text-gray-100">
-                                    <ApplicationLogo className="w-25 h-25 fill-current text-gray-500 mb-6" />
+                                    <div className="flex justify-center items-center">
+                                        <ApplicationLogo className="w-25 h-25 fill-current text-gray-500 mb-6" />
+                                    </div>
+                                    <div className="flex justify-between p-10">
+                                        <div className="flex flex-column mb-6 gap-2">
+                                            <label htmlFor="">
+                                                Name:___________________________________
+                                            </label>
+                                            <label htmlFor="">
+                                                Year &
+                                                Course:___________________________________
+                                            </label>
+                                        </div>
+                                        <div className="flex flex-column mb-6 gap-2">
+                                            <label htmlFor="">
+                                                Date:___________________________________
+                                            </label>
+                                            <label htmlFor="">
+                                                Score:___________________________________
+                                            </label>
+                                        </div>
+                                    </div>
+
                                     {records.map((a, index) => (
                                         <div key={index}>
                                             <div className="w-100 h-full">
@@ -180,7 +204,7 @@ export default function QuizPage({ auth }) {
                                 </div>
                             </div>
                             <div className="flex justify-end">
-                                <PrimaryButton onClick={generateDocx}>
+                                <PrimaryButton onClick={generateWordDocument}>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="16"

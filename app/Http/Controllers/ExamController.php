@@ -35,6 +35,7 @@ class ExamController extends Controller
         $model -> Ac = $request->answerC;
         $model -> Ad = $request->answerD;
         $model -> Akey = $request->Akey;
+        $model -> difficulty = $request->Alvl;
         $model -> department_name = "Enginnering";
         $model->save();
         return redirect()->back();
@@ -49,6 +50,7 @@ class ExamController extends Controller
         $model -> Ac = $request->answerC;
         $model -> Ad = $request->answerD;
         $model -> Akey = $request->Akey;
+        $model -> difficulty = $request->Alvl;
         $model -> department_name = "Enginnering";
         $model->save();
         return redirect()->back();

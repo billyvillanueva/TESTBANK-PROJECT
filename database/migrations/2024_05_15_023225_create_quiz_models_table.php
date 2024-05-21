@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('Ac')->nullable();
             $table->string('Ad')->nullable();
             $table->string('Akey')->nullable();
+            $table->string('difficulty')->nullable();
             $table->string('department_name')->nullable();
             $table->timestamps();
         });
