@@ -118,44 +118,100 @@ export default function QuizPage({ auth }) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex justify-end">
-                        <div className="w-100 flex justify-between">
-                            <div className="w-75 flex items-center">
-                                <select
-                                    onClick={Filter}
-                                    name=""
-                                    id=""
-                                    style={{
-                                        border: "1px solid #dee2e6",
-                                        borderRadius: "8px",
-                                    }}
-                                >
-                                    <option value="All">All</option>
-                                    <option value="Easy">Easy</option>
-                                    <option value="Average">Average</option>
-                                    <option value="Hard">Hard</option>
-                                </select>
-                            </div>
-                            <div className="w-50 p-4 flex justify-between">
-                                <input
-                                    type="text"
-                                    placeholder="Search here..."
-                                    onChange={(e) =>
-                                        setQuizSearch(e.target.value)
-                                    }
-                                    className="searchhere"
-                                    style={{
-                                        padding: "10px",
-                                        borderRadius: "50px",
-                                        border: "1px solid #dee2e6",
-                                        width: "100%",
-                                    }}
-                                />
+                    <div className="p-12 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="flex justify-end">
+                            <div className="w-100 flex flex-column">
+                                <div className="w-100 p-2 flex justify-end">
+                                    <div className="w-75 flex justify-end">
+                                        <div className="w-50 flex justify-end">
+                                            <input
+                                                type="text"
+                                                placeholder="Search here..."
+                                                onChange={(e) =>
+                                                    setQuizSearch(
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className="searchhere"
+                                                style={{
+                                                    padding: "10px",
+                                                    borderRadius: "50px",
+                                                    border: "1px solid #dee2e6",
+                                                    width: "100%",
+                                                    backgroundColor: "#f3f4f6",
+                                                }}
+                                            />
+                                            <svg
+                                                style={{
+                                                    display: "absolute",
+                                                    transform:
+                                                        "translate(-40px, 12px)",
+                                                }}
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="20"
+                                                height="20"
+                                                fill="currentColor"
+                                                className="bi bi-search opacity-50"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-100 flex items-center pb-4">
+                                    <div>
+                                        <label
+                                            htmlFor="lvl"
+                                            className="opacity-50"
+                                        >
+                                            Level of Difficulty:
+                                        </label>
+                                        <select
+                                            onClick={Filter}
+                                            name=""
+                                            id="lvl"
+                                            style={{
+                                                border: "1px solid #dee2e6",
+                                                borderRadius: "8px",
+                                            }}
+                                        >
+                                            <option value="All">All</option>
+                                            <option value="Easy">Easy</option>
+                                            <option value="Average">
+                                                Average
+                                            </option>
+                                            <option value="Hard">Hard</option>
+                                        </select>
+                                    </div>
+                                    <div className="ml-2">
+                                        <label className="opacity-50">
+                                            per Course:
+                                        </label>
+                                        <select
+                                            onClick={Filter}
+                                            name=""
+                                            id=""
+                                            style={{
+                                                border: "1px solid #dee2e6",
+                                                borderRadius: "8px",
+                                            }}
+                                        >
+                                            <option value="All">All</option>
+                                            <option value="Easy">
+                                                ITEC 101
+                                            </option>
+                                            <option value="Average">
+                                                GNED 09
+                                            </option>
+                                            <option value="Hard">
+                                                ITEC 100
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <table
                             className="table max-w-7xl mx-auto"
                             id="resizable"

@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,14 +26,22 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/exampage', [ExamController::class, 'exampage'])->name('exampage');
 Route::get('/export', [ExportController::class, 'exportFile'])->middleware(['auth', 'verified'])->name('export');
+Route::get('/register_teacher', [TeacherController::class, 'register'])->name('register_teacher');
+Route::get('/register_student', [StudentController::class, 'register'])->name('register_student');
+Route::get('/register_courses', [TeacherController::class, 'courses'])->name('register_courses');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+// admin
+Route::post('/reg_course', [AdminController::class, "register"])->name("reg_courses");
+Route::get('/jsoncourse', [AdminController::class, "jsoncourses"]);
+Route::get('/viewData/{id}', [AdminController::class, "viewData"]);
+// end admin
 
-
+// quiz
 Route::get('/jsonQuiz', [ExamController::class, 'jsonQuiz']);
 Route::get('/jsonQuizRandom/{limit}/{lvl}', [ExportController::class, 'index'])->name('jsonQuizRandom');
 Route::get('/quizes', [ExamController::class, 'Quizes'])->name('quizes');
@@ -38,8 +49,11 @@ Route::get('/delete/{id}', [ExamController::class, 'deleteQuiz'])->name('deleteQ
 Route::post('/addQuiz', [ExamController::class, 'addQuiz'])->name('addQuiz');
 Route::post('/saveEdit', [ExamController::class, 'saveEditQuiz'])->name('saveEdit');
 Route::get('/jsonCount', [ExamController::class, 'quizCountJson'])->name('quizCountJson');
+// end quiz
 
+// teacher
+Route::get('/jsonTeacher', [TeacherController::class, 'jsonTeacherData']);
 
-
+// end teacher
 
 require __DIR__.'/auth.php';

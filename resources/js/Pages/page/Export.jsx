@@ -7,8 +7,6 @@ import { Document, Packer, Paragraph, VerticalAlign } from "docx";
 import { saveAs } from "file-saver";
 import Docxtemplater from "docxtemplater";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { ComponentToPrint } from "./PrintPaper";
-import ReactToPrint from "react-to-print";
 import { Example } from "./PrintButton";
 import ReactDOM from "react-dom";
 
@@ -34,6 +32,8 @@ export default function QuizPage({ auth }) {
         );
         const resdata = await reqdata.json();
         setRecords(resdata);
+        window.localStorage.setItem("limit", JSON.stringify(LimitItem));
+        window.localStorage.setItem("level", JSON.stringify(LvlItem));
     };
 
     // const generateWordDocument = () => {
@@ -110,7 +110,7 @@ export default function QuizPage({ auth }) {
                             </PrimaryButton>
                         </div>
                     </div>
-                    {records.length !== 1 && (
+                    {records.length > 1 && (
                         <div className="dark:bg-gray-800 overflow-hidden p-12 ">
                             <div>
                                 <div className="flex justify-center items-center mb-4 font-bold">

@@ -4,17 +4,27 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 
 export const ComponentToPrint = React.forwardRef((props, ref) => {
+    const [limit, setLimit] = useState();
+    useEffect(() => {
+        setLimit(localStorage.getItem("limit"));
+    });
+    const [level, setLevel] = useState();
+    useEffect(() => {
+        setLevel(localStorage.getItem("level"));
+    });
+
     const [records, setRecords] = useState([{}]);
     useEffect(() => {
         const getQuizdata = async () => {
             const reqdata = await fetch(
-                `http://127.0.0.1:8000/jsonQuizRandom/3/Average`
+                `http://127.0.0.1:8000/jsonQuizRandom/${limit}/${level}`
             );
             const resdata = await reqdata.json();
             setRecords(resdata);
         };
         getQuizdata();
     }, []);
+    console.log(limit);
 
     return (
         <div ref={ref}>
