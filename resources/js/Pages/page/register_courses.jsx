@@ -26,6 +26,8 @@ export default function register_courses({ auth }) {
         getTeacherdata();
     }, []);
 
+    const viewProf = (code) => {};
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -98,10 +100,7 @@ export default function register_courses({ auth }) {
                             <div className="p-2">
                                 <h1>Course List</h1>
                             </div>
-                            <table
-                                className="table max-w-7xl mx-auto"
-                                id="resizable"
-                            >
+                            <table className="table table-hover max-w-7xl mx-auto">
                                 <thead className="table-dark">
                                     <tr>
                                         <th>#</th>
@@ -112,7 +111,13 @@ export default function register_courses({ auth }) {
 
                                 <tbody>
                                     {records.map((course, index) => (
-                                        <tr key={index}>
+                                        <tr
+                                            key={index}
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                                viewProf(course.course_code)
+                                            }
+                                        >
                                             <td>{course.id}</td>
                                             <td>{course.course_code}</td>
                                             <td>{course.course_title}</td>

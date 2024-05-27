@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="{{asset('assets/css/profileStyle.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css" integrity="sha512-LX0YV/MWBEn2dwXCYgQHrpa9HJkwB+S+bnBpifSOTO1No27TqNMKYoAn6ff2FBh03THAzAiiCwQ+aPX+/Qt/Ow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
-
-<div class="container">
+<body style="background-color:#f3f4f6;">
+<div class="w-100 p-2 px-4 flex text-end" style="position:fixed;">
+    <h1 style="cursor:pointer;">X</h1>
+</div>
+<div class="container" >
 <div class="row py-4">
     <div class="col-xl-auto">
         <div class="card">
@@ -23,7 +25,7 @@
                             <h5 class="text-muted font-size-13 mb-0">{{$data->IDnumber}}</h5>
                         </div>
                     </div><!-- end col -->
-                    <div class="col-md-9">
+                    <div class="col-md-9">  
                         <div class="ms-3">
                             <div>
                                 <h4 class="card-title mb-2">{{$data->role}}</h4>
@@ -49,7 +51,7 @@
                                     </a>
                                 </li><!-- end li -->
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link px-4"  href="https://bootdey.com/snippets/view/profile-task-with-team-cards" target="__blank" >
+                                    <a class="nav-link px-4"  href="{{route('task')}}" target="__blank" >
                                         <span class="d-block d-sm-none"><i class="mdi mdi-menu-open"></i></span>
                                         <span class="d-none d-sm-block">Tasks</span>
                                     </a>

@@ -11,6 +11,7 @@ import TextInput from "@/Components/TextInput";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import Details from "./Details";
 
 export default function register_teacher({ auth }) {
     const [records, setRecords] = useState();
@@ -51,6 +52,27 @@ export default function register_teacher({ auth }) {
     };
 
     const [search, setQuizSearch] = useState("");
+
+    const [viewDetails, setViewDetails] = useState({});
+    const ProfileDetails = async (id) => {
+        const reqdata = await fetch(
+            `http://127.0.0.1:8000/jsonTeacherProfile/${id}`
+        );
+        const resdata = await reqdata.json();
+        setViewDetails(resdata);
+    };
+
+    const [isActive, setisActive] = useState({});
+    useEffect(() => {
+        const getStatus = async () => {
+            const reqdata = await fetch("http://127.0.0.1:8000/jsonSession");
+            const resdata = await reqdata.json();
+            // setUserdata(resdata);
+            const array = Object.values(resdata);
+            setisActive(array);
+        };
+        getStatus();
+    }, []);
 
     return (
         <AuthenticatedLayout
@@ -122,10 +144,7 @@ export default function register_teacher({ auth }) {
                                 </svg>
                             </PrimaryButton>
                         </div>
-                        <table
-                            className="table max-w-7xl mx-auto"
-                            id="resizable"
-                        >
+                        <table className="table table-hover max-w-7xl mx-auto">
                             <thead className="table-dark">
                                 <tr>
                                     <th>Teacher Number</th>
@@ -156,7 +175,12 @@ export default function register_teacher({ auth }) {
                                                 <td>{data.IDnumber}</td>
                                                 <td>{data.name}</td>
                                                 <td>{data.email}</td>
-                                                <td>Acitve</td>
+                                                <td>
+                                                    {" "}
+                                                    <span className="badge badge-soft-success p-2 team-status">
+                                                        Active
+                                                    </span>
+                                                </td>
                                                 <td>
                                                     <PrimaryButton
                                                         className="bg-white"
@@ -190,7 +214,13 @@ export default function register_teacher({ auth }) {
                                                             >
                                                                 <ul>
                                                                     <Dropdown.Link
-                                                                        href={`viewData/${data.id}`}
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#DetailsModal"
+                                                                        onClick={() =>
+                                                                            ProfileDetails(
+                                                                                data.id
+                                                                            )
+                                                                        }
                                                                     >
                                                                         View
                                                                     </Dropdown.Link>
@@ -406,6 +436,34 @@ export default function register_teacher({ auth }) {
                 </div>
                 {/* end modal register */}
             </div>
+
+            {/* modal View Details */}
+            <div
+                className="modal fade pr-96"
+                id="DetailsModal"
+                tabIndex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+            >
+                <div className="modal-dialog">
+                    <div
+                        className="modal-content"
+                        style={{
+                            width: "100vh",
+                            backgroundColor: "transparent",
+                            border: "none",
+                        }}
+                    >
+                        <div
+                            className="modal-body"
+                            style={{ backgroundColor: "transparent" }}
+                        >
+                            <Details data={viewDetails} key={viewDetails.id} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* end modal details */}
         </AuthenticatedLayout>
     );
 }

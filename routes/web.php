@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
 Route::post('/reg_course', [AdminController::class, "register"])->name("reg_courses");
 Route::get('/jsoncourse', [AdminController::class, "jsoncourses"]);
 Route::get('/viewData/{id}', [AdminController::class, "viewData"]);
+Route::get('/task', [AdminController::class, "taskView"])->name('task');
 // end admin
 
 // quiz
@@ -53,7 +54,8 @@ Route::get('/jsonCount', [ExamController::class, 'quizCountJson'])->name('quizCo
 
 // teacher
 Route::get('/jsonTeacher', [TeacherController::class, 'jsonTeacherData']);
-
+Route::get('/jsonTeacherProfile/{id}', [TeacherController::class, 'jsonTeacherProfileData']);
+Route::get('/jsonSession', [TeacherController::class, 'jsonSession']);
 // end teacher
 
 require __DIR__.'/auth.php';

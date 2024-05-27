@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 use Inertia\Inertia;
 
 class TeacherController extends Controller
@@ -19,5 +21,16 @@ class TeacherController extends Controller
     {
         $data = User::all()->where('role', "Teacher");
         return $data;
+    }
+    function jsonTeacherProfileData($id)
+    {
+        $data = User::find($id);
+        return $data;
+    }
+    function jsonSession()
+    {
+        $status = DB::table('sessions')
+        ->get();
+        return $status;
     }
 }

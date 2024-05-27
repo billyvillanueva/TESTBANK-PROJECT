@@ -35,4 +35,8 @@ class AdminController extends Controller
        $data = User::find($id);
        return view('Details', ['data'=>$data]);
     }
+    public function taskView()
+    {
+      return view('Task');
+    }
 }
