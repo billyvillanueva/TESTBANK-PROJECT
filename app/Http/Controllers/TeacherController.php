@@ -11,7 +11,7 @@ class TeacherController extends Controller
 {
     function register()
     {
-        return Inertia::render('page/register_teacher');
+        return Inertia::render('page/reg_teacher');
     }
     function courses()
     {

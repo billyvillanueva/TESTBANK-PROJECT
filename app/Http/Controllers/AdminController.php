@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\CourseList;
+use App\Models\Course_Handled_By;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -38,5 +39,13 @@ class AdminController extends Controller
     public function taskView()
     {
       return view('Task');
+    }
+    public function addCourse(Request $request)
+    {
+    
+    }
+    function regForm()
+    {
+      return Inertia::render('page/Reg_Form');
     }
 }

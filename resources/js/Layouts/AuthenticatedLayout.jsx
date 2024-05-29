@@ -130,9 +130,7 @@ export default function Authenticated({ auth, user, header, children }) {
                                         >
                                             <ul>
                                                 <Dropdown.Link
-                                                    href={route(
-                                                        "register_teacher"
-                                                    )}
+                                                    href={route("reg_teacher")}
                                                 >
                                                     Teacher Reg
                                                 </Dropdown.Link>

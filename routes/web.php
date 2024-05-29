@@ -26,7 +26,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/exampage', [ExamController::class, 'exampage'])->name('exampage');
 Route::get('/export', [ExportController::class, 'exportFile'])->middleware(['auth', 'verified'])->name('export');
-Route::get('/register_teacher', [TeacherController::class, 'register'])->name('register_teacher');
+Route::get('/reg_teacher', [TeacherController::class, 'register'])->name('reg_teacher');
 Route::get('/register_student', [StudentController::class, 'register'])->name('register_student');
 Route::get('/register_courses', [TeacherController::class, 'courses'])->name('register_courses');
 
@@ -40,6 +40,8 @@ Route::post('/reg_course', [AdminController::class, "register"])->name("reg_cour
 Route::get('/jsoncourse', [AdminController::class, "jsoncourses"]);
 Route::get('/viewData/{id}', [AdminController::class, "viewData"]);
 Route::get('/task', [AdminController::class, "taskView"])->name('task');
+Route::post('/addCourse', [AdminController::class, "addCourse"])->name('addCourse');
+Route::get('/reg_form', [AdminController::class, "regForm"])->name('reg_form');
 // end admin
 
 // quiz
