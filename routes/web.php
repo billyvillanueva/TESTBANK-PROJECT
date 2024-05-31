@@ -42,6 +42,8 @@ Route::get('/viewData/{id}', [AdminController::class, "viewData"]);
 Route::get('/task', [AdminController::class, "taskView"])->name('task');
 Route::post('/addCourse', [AdminController::class, "addCourse"])->name('addCourse');
 Route::get('/reg_form', [AdminController::class, "regForm"])->name('reg_form');
+Route::get('/HandleTeacherDelete/{id}', [AdminController::class, "deleteTeacher"]);
+Route::get('/pending_question/{id}', [AdminController::class, "Pending_json"]);
 // end admin
 
 // quiz
@@ -58,6 +60,8 @@ Route::get('/jsonCount', [ExamController::class, 'quizCountJson'])->name('quizCo
 Route::get('/jsonTeacher', [TeacherController::class, 'jsonTeacherData']);
 Route::get('/jsonTeacherProfile/{id}', [TeacherController::class, 'jsonTeacherProfileData']);
 Route::get('/jsonSession', [TeacherController::class, 'jsonSession']);
+Route::get('/jsonHandledCourses/{id}', [TeacherController::class, 'jsonHandledCourses']);
+Route::get('/CoursesinTeacher/{code}', [TeacherController::class, 'Courses_Teacher']);
 // end teacher
 
 require __DIR__.'/auth.php';

@@ -110,6 +110,15 @@ export default function Authenticated({ auth, user, header, children }) {
                                         onClick={toggleRegOpen}
                                     >
                                         Registration
+                                        <span
+                                            className="absolute w-5 h-5 rounded-full bg-red-600 flex justify-center items-center"
+                                            style={{
+                                                transform:
+                                                    "translate(95px, -12px)",
+                                            }}
+                                        >
+                                            <p className="text-xs">2</p>
+                                        </span>
                                         <svg
                                             className="ms-2 -me-0.5 h-4 w-4"
                                             xmlns="http://www.w3.org/2000/svg"

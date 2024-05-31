@@ -24,6 +24,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function HandledCourses()
+    {
+        return $this->hasMany(Course_Handled_By::class, 'prof_id', 'id');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

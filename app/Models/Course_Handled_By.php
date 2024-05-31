@@ -11,8 +11,14 @@ class Course_Handled_By extends Model
     protected $table = 'course__handled__bies';
     protected $fillable = [
         'prof_id',
+        'prof_IDnumber',
+        'prof_name',
+        'prof_email',
         'course_code',
     ];
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
  
 }

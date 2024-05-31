@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\CourseList;
 use App\Models\Course_Handled_By;
+use App\Models\QuizModel;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -48,4 +49,17 @@ class AdminController extends Controller
     {
       return Inertia::render('page/Reg_Form');
     }
+    function deleteTeacher($id)
+    {
+      $data = User::find($id);
+      $data->delete();
+
+      return redirect()->back()->with('success', 'Profile Deleted Successfully!');
+    }
+    function Pending_json($id)
+    {
+      $data = Quizmodel::all()->where('handled_by', $id);
+      return $data;
+    }
+
 }

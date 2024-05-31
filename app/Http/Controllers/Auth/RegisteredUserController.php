@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Course_Handled_By;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -43,18 +44,24 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-   
+        if ($data = $request->course) {
+            foreach ($data as $datas) {
+                    $user->HandledCourses()->create([
+                        'prof_id' => $user->id,
+                        'prof_IDnumber'=>$user->IDnumber,
+                        'prof_name'=>$user->name,
+                        'prof_email'=>$user->email,
+                        'course_code' => $datas,  
+                    ]);
         
-               
-            
-     
+    }
+}
 
         event(new Registered($user));
         return redirect()->back();  
       
 
         // Auth::login($user);
-
         // return redirect(route('dashboard', absolute: false));
 
 

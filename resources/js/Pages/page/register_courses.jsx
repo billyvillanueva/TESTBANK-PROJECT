@@ -26,7 +26,16 @@ export default function register_courses({ auth }) {
         getTeacherdata();
     }, []);
 
-    const viewProf = (code) => {};
+    const [profCourselist, setProfCourseList] = useState([]);
+    const viewProf = async (code) => {
+        try {
+            const reqdata = await fetch(`./CoursesinTeacher/${code}`);
+            const resdata = await reqdata.json();
+            setProfCourseList(resdata);
+        } catch (error) {
+            console.error("Error saving data:", error);
+        }
+    };
 
     return (
         <AuthenticatedLayout
@@ -129,7 +138,7 @@ export default function register_courses({ auth }) {
 
                         <div className="p-6 w-50 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-2">
-                                <h1>belongs to</h1>
+                                <h1>Handled by</h1>
                             </div>
                             <table
                                 className="table max-w-7xl mx-auto"
@@ -139,14 +148,19 @@ export default function register_courses({ auth }) {
                                     <tr>
                                         <th>Teacher #</th>
                                         <th>Name</th>
+                                        <th>email</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                    {profCourselist &&
+                                        profCourselist.map((data, index) => (
+                                            <tr key={index}>
+                                                <td>{data.prof_IDnumber}</td>
+                                                <td>{data.prof_name}</td>
+                                                <td>{data.prof_email}</td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>

@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('course__handled__bies', function (Blueprint $table) {
             $table->id();
-            $table->string('prof_id')->nullable();
+            $table->unsignedBigInteger('prof_id');
+            $table->string('prof_IDnumber')->nullable();
+            $table->string('prof_name')->nullable();
+            $table->string('prof_email')->nullable();
             $table->string('course_code')->nullable();
+            $table->foreign('prof_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

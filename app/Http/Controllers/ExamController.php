@@ -7,6 +7,7 @@ use App\Models\QuizModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;    
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 
 class ExamController extends Controller
@@ -17,7 +18,8 @@ class ExamController extends Controller
     }
     function jsonQuiz()
     { 
-        $data = QuizModel::all();
+        $id =Auth::user()->id;
+        $data = QuizModel::all()->where('handled_by', $id);
         return $data;
     }
     function deleteQuiz($id)
@@ -28,7 +30,9 @@ class ExamController extends Controller
     }
     function addQuiz(Request $request): RedirectResponse
     {
+        $id = Auth::user()->id;
         $model = new QuizModel();
+        $model -> handled_by = $id;
         $model -> Question = $request->question;
         $model -> Aa = $request->answerA;
         $model -> Ab = $request->answerB;
@@ -36,7 +40,7 @@ class ExamController extends Controller
         $model -> Ad = $request->answerD;
         $model -> Akey = $request->Akey;
         $model -> difficulty = $request->Alvl;
-        $model -> department_name = "Enginnering";
+        $model -> FieldOf = $request->Fieldof;
         $model->save();
         return redirect()->back();
     }

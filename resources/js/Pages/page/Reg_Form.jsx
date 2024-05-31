@@ -37,16 +37,31 @@ export default function register_student({ auth }) {
     const submit = (e) => {
         post(route("register"));
     };
+    // const [selectedOptions, setSelectedOptions] = useState([]);
+
+    // const handleSelectChange = (e) => {
+    //     const selectedValues = Array.from(
+    //         e.target.selectedOptions,
+    //         (option) => option.value
+    //     );
+    //     setSelectedOptions(selectedValues);
+    //     setData("course", selectedValues);
+    // };
     const [selectedOptions, setSelectedOptions] = useState([]);
 
-    const handleSelectChange = (e) => {
-        const selectedValues = Array.from(
-            e.target.selectedOptions,
-            (option) => option.value
-        );
-        setSelectedOptions(selectedValues);
-        setData("course", selectedValues);
+    const handleOptionClick = (option) => {
+        if (selectedOptions.includes(option)) {
+            setSelectedOptions(
+                selectedOptions.filter((item) => item !== option)
+            );
+        } else {
+            setSelectedOptions([...selectedOptions, option]);
+        }
     };
+    useEffect(() => {
+        setData("course", selectedOptions);
+    }, [selectedOptions]);
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -150,7 +165,124 @@ export default function register_student({ auth }) {
                                         className="mt-2"
                                     />
                                 </div>
-
+                                <div className="mt-4">
+                                    <InputLabel
+                                        htmlFor="email"
+                                        value="Subjects/Courses:"
+                                    />
+                                    <TextInput
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#CourseModal"
+                                        id="course"
+                                        type="text"
+                                        name="course"
+                                        value={selectedOptions.join(", ")}
+                                        className="mt-1 block w-full shadow-none cursor-pointer"
+                                    />
+                                    <a
+                                        className="absolute opacity-50"
+                                        style={{
+                                            transform:
+                                                "translate(520px, -30px)",
+                                        }}
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="20"
+                                            height="20"
+                                            fill="currentColor"
+                                            class="bi bi-chevron-down"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path
+                                                fill-rule="evenodd"
+                                                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+                                            />
+                                        </svg>
+                                    </a>
+                                </div>
+                                {/* modal Courses */}
+                                <div
+                                    className="modal fade"
+                                    id="CourseModal"
+                                    tabIndex="-1"
+                                    aria-labelledby="exampleModalLabel"
+                                    aria-hidden="true"
+                                >
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h5
+                                                    className="modal-title"
+                                                    id="exampleModalLabel"
+                                                >
+                                                    List of Courses
+                                                </h5>
+                                                <button
+                                                    type="button"
+                                                    className="btn-close"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                ></button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <div className="pt-2">
+                                                    {courseRecords.map(
+                                                        (course, index) => (
+                                                            <div
+                                                                className="row"
+                                                                key={index}
+                                                            >
+                                                                <div className="col-xl-12">
+                                                                    <div
+                                                                        className="task-list-box"
+                                                                        id="landing-task"
+                                                                    >
+                                                                        <div id="task-item-1">
+                                                                            <div className="card task-box rounded-3">
+                                                                                <div className="card-body">
+                                                                                    <div className="row align-items-center">
+                                                                                        <div className="col-xl-6 col-sm-5">
+                                                                                            <div className="checklist form-check font-size-15">
+                                                                                                <input
+                                                                                                    name="course"
+                                                                                                    type="checkbox"
+                                                                                                    className="form-check-input"
+                                                                                                    id={`${course.course_code}`}
+                                                                                                    checked={selectedOptions.includes(
+                                                                                                        course.course_code
+                                                                                                    )}
+                                                                                                    onClick={() =>
+                                                                                                        handleOptionClick(
+                                                                                                            course.course_code
+                                                                                                        )
+                                                                                                    }
+                                                                                                />
+                                                                                                <label
+                                                                                                    className="form-check-label ms-1 task-title"
+                                                                                                    htmlFor={`${course.course_code}`}
+                                                                                                >
+                                                                                                    {
+                                                                                                        course.course_code
+                                                                                                    }
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* end modal Course */}
                                 <div className="mt-4">
                                     <InputLabel
                                         htmlFor="password"
@@ -203,93 +335,6 @@ export default function register_student({ auth }) {
                                         className="mt-2"
                                     />
                                 </div>
-                                <div className="pt-6">
-                                    <InputLabel
-                                        htmlFor="password_confirmation"
-                                        value="Subject / Courses"
-                                    />
-
-                                    <select
-                                        multiple
-                                        value={selectedOptions}
-                                        onChange={(e) => handleSelectChange(e)}
-                                        className="w-100 rounded-md mt-1"
-                                    >
-                                        {courseRecords.map((option, index) => (
-                                            <option
-                                                key={index}
-                                                value={option.course_code}
-                                            >
-                                                *{option.course_code}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <p>
-                                        Selected Options:{" "}
-                                        {selectedOptions.join(", ")}
-                                    </p>
-                                </div>
-                                {/* <div className="pt-2">
-                                    {courseRecords.map((data, index) => (
-                                        <div className="row" key={index}>
-                                            <div className="col-xl-12">
-                                                <div
-                                                    className="task-list-box"
-                                                    id="landing-task"
-                                                >
-                                                    <div id="task-item-1">
-                                                        <div className="card task-box rounded-3">
-                                                            <div className="card-body">
-                                                                <div className="row align-items-center">
-                                                                    <div className="col-xl-6 col-sm-5">
-                                                                        <div className="checklist form-check font-size-15">
-                                                                            <input
-                                                                                name="course"
-                                                                                type="checkbox"
-                                                                                className="form-check-input"
-                                                                                id={`${data.course_code}`}
-                                                                                onChange={
-                                                                                    // () =>
-                                                                                    //     setIsChecked(
-                                                                                    //         !isChecked
-                                                                                    //     ),
-                                                                                    (
-                                                                                        e
-                                                                                    ) =>
-                                                                                        setData(
-                                                                                            "course",
-                                                                                            e
-                                                                                                .target
-                                                                                                .id
-                                                                                        )
-                                                                                }
-                                                                            />
-                                                                            <label
-                                                                                className="form-check-label ms-1 task-title"
-                                                                                htmlFor={`${data.course_code}`}
-                                                                            >
-                                                                                <span className="font-bold">
-                                                                                    {
-                                                                                        data.course_code
-                                                                                    }
-                                                                                </span>
-
-                                                                                -
-                                                                                {
-                                                                                    data.course_title
-                                                                                }
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div> */}
 
                                 <div className="flex items-center justify-end mt-4">
                                     {/* <Link
